@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 한글 폰트 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
+  <title>빈칸 문제</title>
+
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      text-align: center;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    input {
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+      width: 200px;
+    }
+
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    #result {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    /* ✅ 전체화면 슬라이드 */
+    #slideWrap {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      z-index: 9999;
+    }
+
+    #slideFrame {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* ✅ 로딩 가림막 */
+    #loadingCover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      color: white;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      font-size: 22px;
+      z-index: 10000;
+    }
+
+    /* 닫기 버튼 */
+    #closeBtn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      z-index: 10001;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <input type="text" id="answer" placeholder="정답 입력">
+    <br>
+    <button onclick="check()">확인</button>
+    <p id="result"></p>
+  </div>
+
+  <!-- ✅ 전체화면 슬라이드 -->
+  <div id="slideWrap">
+
+    <!-- 로딩 커버 -->
+    <div id="loadingCover"></div>
+
+    <button id="closeBtn" onclick="closeSlide()">닫기 ✕</button>
+    <iframe id="slideFrame"></iframe>
+  </div>
+
+  <script>
+    function check() {
+      const correct = "hidden";
+      const user = document.getElementById("answer").value.trim().toLowerCase();
+
+      if (user === correct) {
+        document.getElementById("result").innerText = "🎉 정답!";
+
+        const wrap = document.getElementById("slideWrap");
+        const frame = document.getElementById("slideFrame");
+        const loading = document.getElementById("loadingCover");
+
+        // 로딩 표시
+        loading.style.display = "flex";
+
+        frame.src = "https://docs.google.com/presentation/d/e/2PACX-1vTQvlFAtJu2LLqyIVqM1kL_yVgXkfZFRxJo38YUXm8MGg_6_3cwRrMNWMV7_f19GhS_29D_LU6NQHw8/embed?start=true&loop=false&delayms=3000";
+
+        // 로딩 완료 시 커버 제거
+        frame.onload = () => {
+          loading.style.display = "none";
+        };
+
+        wrap.style.display = "block";
+      } else {
+        document.getElementById("result").innerText = "❌ 오답!";
+      }
+    }
+
+    function closeSlide() {
+      const wrap = document.getElementById("slideWrap");
+      const frame = document.getElementById("slideFrame");
+      const loading = document.getElementById("loadingCover");
+
+      frame.src = ""; // 정지
+      wrap.style.display = "none";
+      loading.style.display = "none";
+    }
+  </script>
+
+</body>
+</html>
